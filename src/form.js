@@ -44,12 +44,13 @@ class Form {
   }
 
   addAddressLine1(line1) {
-    this.address = line1;
+    this.address = this.address || [];
+    this.address.push(line1);
     return true;
   }
 
   addAddressLine2(line2) {
-    this.address += '\n' + line2;
+    this.address.push(line2);
     return true;
   }
 
@@ -61,7 +62,7 @@ class Form {
   getDetails() {
     return {
       name: this.name, DOB: this.DOB, hobbies: this.hobbies,
-      phone: this.phone, address: this.address
+      phone: this.phone, address: this.address.join('\n')
     };
   }
 
@@ -73,7 +74,11 @@ const validatePhone = (number) => {
   return isFinite(number) && ('' + number).length === 10;
 };
 
-const validateDOB = (DOB) => DOB.length === 10;
+const validateDOB = (DOB) => {
+  return DOB.split('-').filter((number) => {
+    return isFinite(number) && DOB.length === 10 && DOB.includes('-');
+  }).length;
+};
 
 const validateHobbies = (hobbies) => hobbies.length !== 0;
 
