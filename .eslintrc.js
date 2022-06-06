@@ -11,7 +11,7 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 'latest',
   },
   rules: {
     indent: ['error', 2],
@@ -47,7 +47,7 @@ module.exports = {
     'no-eval': 'error',
     'no-implicit-globals': 'error',
     'prefer-const': 'error',
-    'no-magic-numbers': 'warn',
+    'no-magic-numbers': 'off',
     'no-process-exit': 'off',
     'no-process-env': 'error',
     'no-return-assign': 'error',

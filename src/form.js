@@ -5,38 +5,51 @@ class Form {
     this.questions = ['name', 'DOB', 'hobbies'];
     this.current = 0;
   }
+
   next() {
     this.current++;
   }
+
   addName(name) {
-    this.name = name;
+    if (validateName(name)) {
+      this.name = name;
+      return true;
+    }
+    return false;
   }
+
   addDOB(DOB) {
-    this.DOB = DOB;
+    if (validateDOB(DOB)) {
+      this.DOB = DOB;
+      return true;
+    }
+    return false;
   }
+
   addHobbies(hobbies) {
-    this.hobbies = hobbies;
+    if (validateHobbies(hobbies)) {
+      this.hobbies = hobbies.split(',');
+      return true;
+    }
+    return false;
   }
+
   question() {
     const something = this.questions[this.current];
     console.log('Please enter your ' + something + ': ');
   }
+
   getDetails() {
     return { name: this.name, DOB: this.DOB, hobbies: this.hobbies };
   }
+
 }
 
-const question = (something) => {
-  console.log('Please enter your ' + something + ': ');
-};
+const validateName = (name) => name.length > 4;
 
-const format = (detail, chunk) => {
-  let data = chunk.slice(0, -1);
-  if (detail === 'hobbies') {
-    data = chunk.slice(0, -1).split(',');
-  }
-  return data;
-};
+const validateDOB = (DOB) => DOB.length === 10;
+
+const validateHobbies = (hobbies) => hobbies.length !== 0;
 
 const write = (json) => {
   console.log('Thank you');
@@ -45,19 +58,21 @@ const write = (json) => {
 };
 
 const main = () => {
-  const form = {};
-  const details = ['name', 'DOB', 'hobbies'];
+  const form = new Form();
+  form.question();
+  const questions = [form.addName, form.addDOB, form.addHobbies];
   let index = 0;
-  question(details[index]);
   process.stdin.setEncoding('utf-8');
   process.stdin.on('data', (chunk) => {
-    const data = format(details[index], chunk);
-    form[details[index]] = data;
-    index++;
-    if (index === details.length) {
-      write(JSON.stringify(form));
+    console.log(form.getDetails());
+    if (questions[index](chunk.slice(0, -1))) {
+      form.next();
+      index++;
+      if (index === questions.length) {
+        write(JSON.stringify(form.getDetails()));
+      }
     }
-    question(details[index]);
+    form.question();
   });
 };
 
