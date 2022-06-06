@@ -36,7 +36,7 @@ class Form {
   }
 
   addHobbies(hobbies) {
-    if (validateHobbies(hobbies)) {
+    if (!isEmpty(hobbies)) {
       this.hobbies = hobbies.split(',');
       return true;
     }
@@ -45,13 +45,19 @@ class Form {
 
   addAddressLine1(line1) {
     this.address = this.address || [];
-    this.address.push(line1);
-    return true;
+    if (!isEmpty(line1)) {
+      this.address.push(line1);
+      return true;
+    }
+    return false;
   }
 
   addAddressLine2(line2) {
-    this.address.push(line2);
-    return true;
+    if (!isEmpty(line2)) {
+      this.address.push(line2);
+      return true;
+    }
+    return false;
   }
 
   question() {
@@ -68,19 +74,20 @@ class Form {
 
 }
 
-const validateName = (name) => name.length > 4;
+const validateName = name => name.length > 4;
 
 const validatePhone = (number) => {
   return isFinite(number) && ('' + number).length === 10;
 };
 
 const validateDOB = (DOB) => {
+  const validFormat = DOB.length === 10 && DOB.includes('-');
   return DOB.split('-').filter((number) => {
-    return isFinite(number) && DOB.length === 10 && DOB.includes('-');
-  }).length;
+    return isFinite(number) && validFormat;
+  }).length === 3;
 };
 
-const validateHobbies = (hobbies) => hobbies.length !== 0;
+const isEmpty = text => text === '';
 
 const write = (json) => {
   console.log('Thank you');
@@ -96,7 +103,9 @@ const main = () => {
   let index = 0;
   process.stdin.setEncoding('utf-8');
   process.stdin.on('data', (chunk) => {
-    if (form[methods[index]](chunk.slice(0, -1))) {
+    const method = methods[index];
+    const data = chunk.trim();
+    if (form[method](data)) {
       form.next();
       index++;
       if (index === methods.length) {
