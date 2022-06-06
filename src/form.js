@@ -4,15 +4,16 @@ const question = (something) => {
   console.log('Please enter your ' + something + ': ');
 };
 
-const format = (type, chunk) => {
+const format = (detail, chunk) => {
   let data = chunk.slice(0, -1);
-  if (type === 'hobbies') {
+  if (detail === 'hobbies') {
     data = chunk.slice(0, -1).split(',');
   }
   return data;
 };
 
 const write = (json) => {
+  console.log('Thank you');
   fs.writeFileSync('form.json', json, 'utf-8');
   process.exit(0);
 };
@@ -27,7 +28,7 @@ const main = () => {
     const data = format(details[index], chunk);
     form[details[index]] = data;
     index++;
-    if (index >= details.length) {
+    if (index === details.length) {
       write(JSON.stringify(form));
     }
     question(details[index]);
