@@ -1,5 +1,31 @@
 const fs = require('fs');
 
+class Form {
+  constructor() {
+    this.questions = ['name', 'DOB', 'hobbies'];
+    this.current = 0;
+  }
+  next() {
+    this.current++;
+  }
+  addName(name) {
+    this.name = name;
+  }
+  addDOB(DOB) {
+    this.DOB = DOB;
+  }
+  addHobbies(hobbies) {
+    this.hobbies = hobbies;
+  }
+  question() {
+    const something = this.questions[this.current];
+    console.log('Please enter your ' + something + ': ');
+  }
+  getDetails() {
+    return { name: this.name, DOB: this.DOB, hobbies: this.hobbies };
+  }
+}
+
 const question = (something) => {
   console.log('Please enter your ' + something + ': ');
 };
