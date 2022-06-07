@@ -10,7 +10,7 @@ class Form {
 
   next() {
     this.#index++;
-    if (this.#index >= this.questions.length) {
+    if (this.isQuestionsFinished()) {
       return;
     }
     this.current = this.questions[this.#index];
@@ -21,15 +21,16 @@ class Form {
   }
 
   question() {
-    const query = this.current.query;
-    console.log('Please enter your ' + query + ': ');
+    console.log(this.current.msg);
   }
 
   answer(reply) {
     if (this.current.validator(reply)) {
-      this.answers[this.current.query] = this.current.parser(reply);
+      this.answers[this.current.key] = this.current.parser(reply);
       this.next();
+      return;
     }
+    console.log('Invalid input');
   }
 
   getAnswers() {

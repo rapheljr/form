@@ -1,13 +1,13 @@
 const fs = require('fs');
 const { Form } = require('./form.js');
 
-const write = (JSON) => {
+const write = JSON => {
   console.log('Thank you');
   fs.writeFileSync('form.json', JSON, 'utf-8');
   process.exit(0);
 };
 
-const validateDOB = (DOB) => {
+const validateDOB = DOB => {
   const validFormat = DOB.length === 10 && DOB[4] === '-' && DOB[7] === '-';
   return DOB.split('-').filter((number) => {
     return isFinite(number) && validFormat;
@@ -18,7 +18,7 @@ const isNotEmpty = text => text !== '';
 
 const validateName = name => name.length > 4;
 
-const validatePhone = (number) => {
+const validatePhone = number => {
   return isFinite(number) && ('' + number).length === 10;
 };
 
@@ -28,12 +28,30 @@ const splitter = content => content.split(',');
 
 const getQuestions = () => {
   const questions = [
-    { query: 'name', validator: validateName, parser: identity },
-    { query: 'DOB', validator: validateDOB, parser: identity },
-    { query: 'hobbies', validator: isNotEmpty, parser: splitter },
-    { query: 'phone-number', validator: validatePhone, parser: identity },
-    { query: 'address-line-1', validator: isNotEmpty, parser: identity },
-    { query: 'address-line-2', validator: isNotEmpty, parser: identity },
+    {
+      key: 'name', msg: 'Please enter your name:',
+      validator: validateName, parser: identity
+    },
+    {
+      key: 'DOB', msg: 'Please enter your DOB(YYYY-MM-DD):',
+      validator: validateDOB, parser: identity
+    },
+    {
+      key: 'hobbies', msg: 'Please enter your hobbies:',
+      validator: isNotEmpty, parser: splitter
+    },
+    {
+      key: 'phone-number', msg: 'Please enter your phone number:',
+      validator: validatePhone, parser: identity
+    },
+    {
+      key: 'address-line-1', msg: 'Please enter your address line 1:',
+      validator: isNotEmpty, parser: identity
+    },
+    {
+      key: 'address-line-2', msg: 'Please enter your address line 2:',
+      validator: isNotEmpty, parser: identity
+    },
   ];
   return questions;
 };
