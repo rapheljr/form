@@ -1,1 +1,11 @@
-{"name":"asdghjlk","DOB":"1234-34-66","hobbies":["wedfg.fgh","fghj"],"phone":"1342543453","address":"resfdhjk\nsdhkhafjks"}
+{
+  "name": "hello",
+  "DOB": "1234-45-55",
+  "hobbies": [
+    "dsal",
+    "afsdj"
+  ],
+  "phone-number": "2135465419",
+  "address-line-1": "qfjsdo",
+  "address-line-2": "adsojla"
+}
