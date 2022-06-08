@@ -17,11 +17,11 @@ const validatePhone = number => number.match(/^\d{10}$/);
 
 const identity = id => id;
 
-const combineAddress = (address2, address1) => {
-  if (address1) {
-    return address1 + '\n' + address2;
+const prepend = (arg1, arg2) => {
+  if (arg2) {
+    return arg2 + '\n' + arg1;
   }
-  return address2;
+  return arg1;
 };
 
 const splitter = content => content.split(',');
@@ -46,11 +46,11 @@ const getQuestions = () => {
     },
     {
       key: 'address', msg: 'Please enter your address line 1:',
-      validator: isNotEmpty, parser: combineAddress
+      validator: isNotEmpty, parser: prepend
     },
     {
       key: 'address', msg: 'Please enter your address line 2:',
-      validator: isNotEmpty, parser: combineAddress
+      validator: isNotEmpty, parser: prepend
     },
   ];
   return questions;
