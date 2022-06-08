@@ -7,22 +7,22 @@ const write = JSON => {
   process.exit(0);
 };
 
-const validateDOB = DOB => {
-  const validFormat = DOB.length === 10 && DOB[4] === '-' && DOB[7] === '-';
-  return DOB.split('-').filter((number) => {
-    return isFinite(number) && validFormat;
-  }).length === 3;
-};
+const validateDOB = DOB => DOB.match(/^\d{4}-\d{2}-\d{2}$/);
 
 const isNotEmpty = text => text !== '';
 
 const validateName = name => name.length > 4;
 
-const validatePhone = number => {
-  return isFinite(number) && ('' + number).length === 10;
-};
+const validatePhone = number => number.match(/^\d{10}$/);
 
 const identity = id => id;
+
+const combineAddress = (address2, address1) => {
+  if (address1) {
+    return address1 + '\n' + address2;
+  }
+  return address2;
+};
 
 const splitter = content => content.split(',');
 
@@ -45,12 +45,12 @@ const getQuestions = () => {
       validator: validatePhone, parser: identity
     },
     {
-      key: 'address-line-1', msg: 'Please enter your address line 1:',
-      validator: isNotEmpty, parser: identity
+      key: 'address', msg: 'Please enter your address line 1:',
+      validator: isNotEmpty, parser: combineAddress
     },
     {
-      key: 'address-line-2', msg: 'Please enter your address line 2:',
-      validator: isNotEmpty, parser: identity
+      key: 'address', msg: 'Please enter your address line 2:',
+      validator: isNotEmpty, parser: combineAddress
     },
   ];
   return questions;

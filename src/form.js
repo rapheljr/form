@@ -1,10 +1,10 @@
 
 class Form {
   #index;
-  constructor(questions) {
-    this.questions = questions;
+  constructor(fields) {
+    this.fields = fields;
     this.#index = 0;
-    this.current = questions[this.#index];
+    this.current = fields[this.#index];
     this.answers = {};
   }
 
@@ -13,11 +13,11 @@ class Form {
     if (this.isQuestionsFinished()) {
       return;
     }
-    this.current = this.questions[this.#index];
+    this.current = this.fields[this.#index];
   }
 
   isQuestionsFinished() {
-    return this.#index >= this.questions.length;
+    return this.#index >= this.fields.length;
   }
 
   question() {
@@ -26,7 +26,8 @@ class Form {
 
   answer(reply) {
     if (this.current.validator(reply)) {
-      this.answers[this.current.key] = this.current.parser(reply);
+      const prevReply = this.answers[this.current.key];
+      this.answers[this.current.key] = this.current.parser(reply, prevReply);
       this.next();
       return;
     }

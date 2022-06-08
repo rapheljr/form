@@ -1,10 +1,1 @@
-{
-  "name": "aflas",
-  "DOB": "1234-56-78",
-  "hobbies": [
-    "alfh"
-  ],
-  "phone-number": "1234567890",
-  "address-line-1": "fsdkhj",
-  "address-line-2": "sfdhvj"
-}
+{"name":"Sakshi","DOB":"2001-11-26","hobbies":["playing","anything"],"phone-number":"7327439828","address":"Pune\nMaharashtra\nIndia"}
