@@ -32,7 +32,7 @@ module.exports = {
     'grouped-accessor-pairs': 'warn',
     'global-require': 'error',
     'handle-callback-err': 'error',
-    'id-length': 'error',
+    'id-length': 'off',
     'key-spacing': 'error',
     'max-len': 'error',
     'max-params': [

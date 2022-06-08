@@ -1,7 +1,7 @@
 
 class Form {
   #index;
-  constructor(fields) {
+  constructor(...fields) {
     this.fields = fields;
     this.#index = 0;
     this.currentField = fields[this.#index];

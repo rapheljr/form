@@ -1,12 +1,11 @@
 const fs = require('fs');
-const { Form } = require('./form.js');
 const { Field } = require('./field.js');
 const { MultiLineField } = require('./multiLineField.js');
 
 const write = JSON => {
   console.log('Thank you');
   fs.writeFileSync('form.json', JSON, 'utf-8');
-  process.exit(0);
+  process.stdin.destroy();
 };
 
 const validateDOB = DOB => DOB.match(/^\d{4}-\d{2}-\d{2}$/);
@@ -26,8 +25,7 @@ const getFields = () => {
     new Field('name', 'Please enter your name:', validateName),
     new Field('DOB', 'Please enter your DOB:', validateDOB),
     new Field('hobbies', 'Please enter your hobbies:', isNotEmpty, commaSplit),
-    new Field('phone-number', 'Please enter your phone number:',
-      validatePhone),
+    new Field('phone-number', 'Please enter your phone number:', validatePhone),
     new MultiLineField('address', addressMsgs, isNotEmpty),
   ];
   return fields;
@@ -42,19 +40,11 @@ const fillField = (form, reply) => {
   if (form.isFilled()) {
     const answers = form.getAnswers();
     write(JSON.stringify(answers));
+    return;
   }
   console.log(form.currentQuestion());
 };
 
-const format = chunk => chunk.trim('\n').split('\n');
+const format = chunk => chunk.trim().split('\n');
 
-const main = () => {
-  const form = new Form(getFields());
-  console.log(form.currentQuestion());
-  process.stdin.setEncoding('utf-8');
-  process.stdin.on('data', (chunk) => {
-    format(chunk).forEach(reply => fillField(form, reply));
-  });
-};
-
-main();
+module.exports = { fillField, getFields, format };

@@ -19,7 +19,7 @@ function assert() {
 
 function case1() {
   prompts=$(
-    node ./src/formMain.js <<EOF
+    node ./fillForm.js <<EOF
 abine
 1999-09-02
 cricket,football
