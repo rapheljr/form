@@ -37,7 +37,7 @@ const fillField = (form, reply) => {
   try {
     form.fillCurrentField(reply);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
   if (form.isFilled()) {
     const answers = form.getAnswers();
@@ -46,12 +46,14 @@ const fillField = (form, reply) => {
   console.log(form.currentQuestion());
 };
 
+const format = chunk => chunk.trim('\n').split('\n');
+
 const main = () => {
   const form = new Form(getFields());
   console.log(form.currentQuestion());
   process.stdin.setEncoding('utf-8');
   process.stdin.on('data', (chunk) => {
-    fillField(form, chunk.trim());
+    format(chunk).forEach(reply => fillField(form, reply));
   });
 };
 

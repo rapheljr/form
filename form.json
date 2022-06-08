@@ -1,1 +1,10 @@
-{"name":"abine","DOB":"1999-09-02","hobbies":["cricket","football"],"phone-number":"9876543210","address":"hai\nhello"}
+{
+  "name": "abine",
+  "DOB": "1999-09-02",
+  "hobbies": [
+    "cricket",
+    "football"
+  ],
+  "phone-number": "9876543210",
+  "address": "kerala\nindia"
+}

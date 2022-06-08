@@ -19,15 +19,17 @@ function assert() {
 
 function case1() {
   prompts=$(
-    node src/formMain.js <<EOF
-abin
-2021-12-12
-playing,football
-9234567810
+    node ./src/formMain.js <<EOF
+abine
+1999-09-02
+cricket,football
+9876543210
+kerala
+india
 EOF
   )
-  expectedPrompts="Enter name Enter dob Enter hobbies Enter ph-no"
-  expected='{"name":"abin","dob":"2021-12-12","hobbies":["playing","football"],"ph-no":"9234567810"}'
+  expectedPrompts="Please enter your name: Please enter your DOB: Please enter your hobbies: Please enter your phone number: Please enter your address line 1: Please enter your address line 2: Thank you"
+  expected='{"name":"abine","DOB":"1999-09-02","hobbies":["cricket","football"],"phone-number":"9876543210","address":"kerala\nindia"}'
   actual=$(cat 'form.json')
   assert "${prompts[@]}" "${expectedPrompts}" "All prompts"
   assert "${actual}" "${expected}" "Details in json"
