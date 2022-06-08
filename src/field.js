@@ -11,6 +11,10 @@ class Field {
     this.reply = reply;
   }
 
+  getMsg() {
+    return this.msg;
+  }
+
   isFilled() {
     return this.reply !== null;
   }

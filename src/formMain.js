@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { Form } = require('./form.js');
 const { Field } = require('./field.js');
+const { MultiLineField } = require('./multiLineField.js');
 
 const write = JSON => {
   console.log('Thank you');
@@ -16,40 +17,38 @@ const validateName = name => name.length > 4;
 
 const validatePhone = number => number.match(/^\d{10}$/);
 
-const prepend = (arg1, arg2) => {
-  if (arg2) {
-    return arg2 + '\n' + arg1;
-  }
-  return arg1;
-};
-
 const commaSplit = content => content.split(',');
 
 const getFields = () => {
+  const addressMsgs = ['Please enter your address line 1:',
+    'Please enter your address line 2:'];
   const fields = [
     new Field('name', 'Please enter your name:', validateName),
     new Field('DOB', 'Please enter your DOB:', validateDOB),
     new Field('hobbies', 'Please enter your hobbies:', isNotEmpty, commaSplit),
     new Field('phone-number', 'Please enter your phone number:',
       validatePhone),
-    new Field('address', 'Please enter your address line 1:',
-      isNotEmpty, prepend),
+    new MultiLineField('address', addressMsgs, isNotEmpty),
   ];
   return fields;
 };
 
 const fillField = (form, reply) => {
-  form.fillCurrentField(reply);
+  try {
+    form.fillCurrentField(reply);
+  } catch (error) {
+    console.log(error);
+  }
   if (form.isFilled()) {
     const answers = form.getAnswers();
     write(JSON.stringify(answers));
   }
-  form.currentQuestion();
+  console.log(form.currentQuestion());
 };
 
 const main = () => {
   const form = new Form(getFields());
-  form.currentQuestion();
+  console.log(form.currentQuestion());
   process.stdin.setEncoding('utf-8');
   process.stdin.on('data', (chunk) => {
     fillField(form, chunk.trim());

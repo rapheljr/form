@@ -8,7 +8,9 @@ class Form {
   }
 
   nextField() {
-    this.#index++;
+    if (this.currentField.isFilled()) {
+      this.#index++;
+    }
     this.currentField = this.fields[this.#index];
   }
 
@@ -17,7 +19,7 @@ class Form {
   }
 
   currentQuestion() {
-    console.log(this.currentField.msg);
+    return this.currentField.getMsg();
   }
 
   fillCurrentField(reply) {
@@ -26,7 +28,7 @@ class Form {
       this.nextField();
       return;
     }
-    console.log('Invalid input');
+    throw new Error('Invalid input');
   }
 
   getAnswers() {
