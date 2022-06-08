@@ -4,38 +4,37 @@ class Form {
   constructor(fields) {
     this.fields = fields;
     this.#index = 0;
-    this.current = fields[this.#index];
-    this.answers = {};
+    this.currentField = fields[this.#index];
   }
 
-  next() {
+  nextField() {
     this.#index++;
-    if (this.isQuestionsFinished()) {
-      return;
-    }
-    this.current = this.fields[this.#index];
+    this.currentField = this.fields[this.#index];
   }
 
-  isQuestionsFinished() {
-    return this.#index >= this.fields.length;
+  isFilled() {
+    return this.fields.every(field => field.isFilled());
   }
 
-  question() {
-    console.log(this.current.msg);
+  currentQuestion() {
+    console.log(this.currentField.msg);
   }
 
-  answer(reply) {
-    if (this.current.validator(reply)) {
-      const prevReply = this.answers[this.current.key];
-      this.answers[this.current.key] = this.current.parser(reply, prevReply);
-      this.next();
+  fillCurrentField(reply) {
+    if (this.currentField.validator(reply)) {
+      this.currentField.fill(this.currentField.parser(reply));
+      this.nextField();
       return;
     }
     console.log('Invalid input');
   }
 
   getAnswers() {
-    return this.answers;
+    const replies = {};
+    this.fields.forEach(field => {
+      replies[field.key] = field.getReply();
+    });
+    return replies;
   }
 }
 

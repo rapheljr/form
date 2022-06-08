@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Form } = require('./form.js');
+const { Field } = require('./field.js');
 
 const write = JSON => {
   console.log('Thank you');
@@ -15,8 +16,6 @@ const validateName = name => name.length > 4;
 
 const validatePhone = number => number.match(/^\d{10}$/);
 
-const identity = id => id;
-
 const prepend = (arg1, arg2) => {
   if (arg2) {
     return arg2 + '\n' + arg1;
@@ -24,50 +23,36 @@ const prepend = (arg1, arg2) => {
   return arg1;
 };
 
-const splitter = content => content.split(',');
+const commaSplit = content => content.split(',');
 
-const getQuestions = () => {
-  const questions = [
-    {
-      key: 'name', msg: 'Please enter your name:',
-      validator: validateName, parser: identity
-    },
-    {
-      key: 'DOB', msg: 'Please enter your DOB(YYYY-MM-DD):',
-      validator: validateDOB, parser: identity
-    },
-    {
-      key: 'hobbies', msg: 'Please enter your hobbies:',
-      validator: isNotEmpty, parser: splitter
-    },
-    {
-      key: 'phone-number', msg: 'Please enter your phone number:',
-      validator: validatePhone, parser: identity
-    },
-    {
-      key: 'address', msg: 'Please enter your address line 1:',
-      validator: isNotEmpty, parser: prepend
-    },
-    {
-      key: 'address', msg: 'Please enter your address line 2:',
-      validator: isNotEmpty, parser: prepend
-    },
+const getFields = () => {
+  const fields = [
+    new Field('name', 'Please enter your name:', validateName),
+    new Field('DOB', 'Please enter your DOB:', validateDOB),
+    new Field('hobbies', 'Please enter your hobbies:', isNotEmpty, commaSplit),
+    new Field('phone-number', 'Please enter your phone number:',
+      validatePhone),
+    new Field('address', 'Please enter your address line 1:',
+      isNotEmpty, prepend),
   ];
-  return questions;
+  return fields;
+};
+
+const fillField = (form, reply) => {
+  form.fillCurrentField(reply);
+  if (form.isFilled()) {
+    const answers = form.getAnswers();
+    write(JSON.stringify(answers));
+  }
+  form.currentQuestion();
 };
 
 const main = () => {
-  const form = new Form(getQuestions());
-  form.question();
+  const form = new Form(getFields());
+  form.currentQuestion();
   process.stdin.setEncoding('utf-8');
   process.stdin.on('data', (chunk) => {
-    const data = chunk.trim();
-    form.answer(data);
-    if (form.isQuestionsFinished()) {
-      const answers = form.getAnswers();
-      write(JSON.stringify(answers));
-    }
-    form.question();
+    fillField(form, chunk.trim());
   });
 };
 
