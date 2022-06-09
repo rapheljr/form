@@ -1,10 +1,9 @@
-const fs = require('fs');
 const { Field } = require('./field.js');
 const { MultiLineField } = require('./multiLineField.js');
 
-const write = JSON => {
-  console.log('Thank you');
-  fs.writeFileSync('form.json', JSON, 'utf-8');
+const write = (JSON, logger, writer) => {
+  logger('Thank you');
+  writer('form.json', JSON, 'utf-8');
   process.stdin.destroy();
 };
 
@@ -31,18 +30,18 @@ const getFields = () => {
   return fields;
 };
 
-const fillField = (form, reply) => {
+const fillField = (form, reply, logger, writer) => {
   try {
     form.fillCurrentField(reply);
   } catch (error) {
-    console.log(error.message);
+    logger(error.message);
   }
   if (form.isFilled()) {
     const answers = form.getAnswers();
-    write(JSON.stringify(answers));
+    write(JSON.stringify(answers), logger, writer);
     return;
   }
-  console.log(form.currentQuestion());
+  logger(form.currentQuestion());
 };
 
 const format = chunk => chunk.trim().split('\n');
