@@ -1,0 +1,22 @@
+{
+  "name": "form",
+  "version": "1.0.0",
+  "description": "A form",
+  "main": "fillForm.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha && bash ./test/testForm.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rapheljr/form.git"
+  },
+  "author": "Abin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rapheljr/form/issues"
+  },
+  "homepage": "https://github.com/rapheljr/form#readme"
+}

@@ -10,9 +10,9 @@ function assert() {
 
   diff /tmp/_actual.txt /tmp/_expected.txt >/dev/null
   code=$?
-  status='Failed'
+  status='❌ Failed'
   if [ ${code} -eq 0 ]; then
-    status='Passed'
+    status='✅ Passed'
   fi
   echo "${status} - ${description}"
 }
